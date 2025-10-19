@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Foto Siswa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .header-content h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header-content p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .header-upload {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-upload h3 {
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .header-image {
+            max-width: 100%;
+            max-height: 300px;
+            margin: 15px auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .upload-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            text-align: center;
+        }
+        
+        .upload-area {
+            border: 3px dashed #3498db;
+            border-radius: 15px;
+            padding: 60px 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(145deg, #f8fafc, #e8f4fc);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            background: linear-gradient(145deg, #e8f4fc, #d4e9fc);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(52, 152, 219, 0.2);
+        }
+        
+        .upload-area i {
+            font-size: 64px;
+            color: #3498db;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .upload-area h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .upload-area p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: #7f8c8d;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        }
+        
+        .preview-container {
+            margin-top: 40px;
+        }
+        
+        .preview-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .preview-item {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .preview-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .preview-info {
+            padding: 15px;
+            background: #f8f9fa;
+        }
+        
+        .preview-info p {
+            margin: 8px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(231, 76, 60, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .delete-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .preview-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .upload-area {
+                padding: 40px 20px;
+            }
+            
+            .header-content h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>📸 Sistem Upload Foto Siswa</h1>
+                <p>Upload banner dan kelola foto siswa dengan mudah</p>
+            </div>
+            <div class="header-upload">
+                <h3>🎨 Upload Banner Sekolah</h3>
+                <input type="file" id="headerUpload" accept="image/*" style="margin: 15px 0; padding: 10px; background: white; border-radius: 5px; width: 100%; max-width: 400px;">
+                <button id="uploadHeaderBtn" class="btn">Upload Header</button>
+                <div id="headerPreview" style="margin-top: 20px;"></div>
+            </div>
+        </header>
+        
+        <section class="upload-section">
+            <h2 class="section-title">👨‍🎓 Upload Foto Siswa</h2>
+            
+            <div class="upload-area" id="dropArea">
+                <i>📷</i>
+                <h3>Seret dan Lepas Foto di Sini</h3>
+                <p>Format yang didukung: JPG, PNG, GIF</p>
+                <p>Maksimal 10 foto sekaligus</p>
+                <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
+                <button class="btn" id="browseBtn">📁 Pilih Foto dari Komputer</button>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" id="uploadBtn">🚀 Upload Semua Foto</button>
+                <button class="btn btn-secondary" id="clearBtn">🗑️ Hapus Semua</button>
+            </div>
+            
+            <div class="preview-container">
+                <h3 class="preview-title">👀 Pratinjau Foto Siswa</h3>
+                <div class="preview-grid" id="previewGrid">
+                    <div style="text-align: center; grid-column: 1 / -1; padding: 40px; color: #7f8c8d;">
+                        <p>Belum ada foto yang diupload</p>
+                        <p>Silakan pilih atau drop foto di area atas</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer style="text-align: center; margin-top: 50px; padding: 20px; color: #7f8c8d;">
+            <p>© 2024 Sistem Upload Foto Siswa - Dibuat dengan ❤️ untuk pendidikan</p>
+        </footer>
+    </div>
+
+    <script>
+        // Element references
+        const headerUpload = document.getElementById('headerUpload');
+        const uploadHeaderBtn = document.getElementById('uploadHeaderBtn');
+        const headerPreview = document.getElementById('headerPreview');
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('fileInput');
+        const browseBtn = document.getElementById('browseBtn');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const previewGrid = document.getElementById('previewGrid');
+        
+        let filesToUpload = [];
+        let currentHeader = null;
+        
+        // Header upload functionality
+        uploadHeaderBtn.addEventListener('click', function() {
+            const file = headerUpload.files[0];
+            if (file) {
+                if (file.type.startsWith('image/')) {
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('Ukuran file maksimal 5MB');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        headerPreview.innerHTML = `
+                            <div style="text-align: center;">
+                                <img src="${e.target.result}" alt="Header Preview" class="header-image">
+                                <p style="color: white; margin-top: 10px;">Header berhasil diupload!</p>
+                            </div>
+                        `;
+                        currentHeader = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert('Silakan pilih file gambar (JPG, PNG, GIF)');
+                }
+            } else {
+                alert('Silakan pilih file untuk header');
+            }
+        });
+        
+        // File selection
+        browseBtn.addEventListener('click', function() {
+            fileInput.click();
+        });
+        
+        fileInput.addEventListener('change', function() {
+            handleFiles(this.files);
+        });
+        
+        // Drag and drop
+        dropArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            dropArea.style.background = 'linear-gradient(145deg, #d4e9fc, #bfe0ff)';
+        });
+        
+        dropArea.addEventListener('dragleave', function() {
+            dropArea.style.background = 'linear-gradient(145deg, #f8fafc, #e8f4fc)';
+        });
+        
+        dropArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            dropArea.style.background = 'linear-gradient(145deg, #f8fafc, #e8f4fc)';
+            handleFiles(e.dataTransfer.files);
+        });
+        
+        // Handle uploaded files
+        function handleFiles(fileList) {
+            if (fileList.length > 10) {
+                alert('Maksimal 10 foto sekaligus');
+                return;
+            }
+            
+            // Clear initial message
+            if (previewGrid.querySelector('div[style*="text-align: center"]')) {
+                previewGrid.innerHTML = '';
+            }
+            
+            for (let i = 0; i < fileList.length; i++) {
+                const file = fileList[i];
+                
+                if (!file.type.startsWith('image/')) {
+                    alert(`File "${file.name}" bukan gambar. Silakan pilih file gambar.`);
+                    continue;
+                }
+                
+                if (file.size > 5 * 1024 * 1024) {
+                    alert(`File "${file.name}" terlalu besar. Maksimal 5MB per file.`);
+                    continue;
+                }
+                
+                if (filesToUpload.some(f => f.name === file.name && f.size === file.size)) {
+                    alert(`File "${file.name}" sudah ada.`);
+                    continue;
+                }
+                
+                filesToUpload.push(file);
+                createPreview(file);
+            }
+            
+            fileInput.value = '';
+        }
+        
+        // Create preview for uploaded files
+        function createPreview(file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const fileName = file.name.split('.')[0];
+                const fileSize = formatFileSize(file.size);
+                
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                previewItem.innerHTML = `
+                    <img src="${e.target.result}" alt="${fileName}">
+                    <button class="delete-btn" title="Hapus foto">×</button>
+                    <div class="preview-info">
+                        <p><strong>Nama:</strong> ${fileName}</p>
+                        <p><strong>Ukuran:</strong> ${fileSize}</p>
+                        <p><strong>Format:</strong> ${file.type.split('/')[1].toUpperCase()}</p>
+                    </div>
+                `;
+                
+                const deleteBtn = previewItem.querySelector('.delete-btn');
+                deleteBtn.addEventListener('click', function() {
+                    filesToUpload = filesToUpload.filter(f => f !== file);
+                    previewGrid.removeChild(previewItem);
+                    
+                    if (filesToUpload.length === 0) {
+                        previewGrid.innerHTML = `
+                            <div style="text-align: center; grid-column: 1 / -1; padding: 40px; color: #7f8c8d;">
+                                <p>Belum ada foto yang diupload</p>
+                                <p>Silakan pilih atau drop foto di area atas</p>
+                            </div>
+                        `;
+                    }
+                });
+                
+                previewGrid.appendChild(previewItem);
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        // Upload all photos
+        uploadBtn.addEventListener('click', function() {
+            if (filesToUpload.length === 0) {
+                alert('Tidak ada foto untuk diupload. Silakan pilih foto terlebih dahulu.');
+                return;
+            }
+            
+            // Simulate upload process
+            uploadBtn.innerHTML = '⏳ Mengupload...';
+            uploadBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert(`✅ Berhasil mengupload ${filesToUpload.length} foto siswa!`);
+                uploadBtn.innerHTML = '🚀 Upload Semua Foto';
+                uploadBtn.disabled = false;
+                
+                // Clear after successful upload
+                filesToUpload = [];
+                previewGrid.innerHTML = `
+                    <div style="text-align: center; grid-column: 1 / -1; padding: 40px; color: #7f8c8d;">
+                        <p>✅ Foto berhasil diupload!</p>
+                        <p>Silakan upload foto berikutnya</p>
+                    </div>
+                `;
+            }, 2000);
+        });
+        
+        // Clear all photos
+        clearBtn.addEventListener('click', function() {
+            if (filesToUpload.length === 0) {
+                alert('Tidak ada foto untuk dihapus.');
+                return;
+            }
+            
+            if (confirm(`Apakah Anda yakin ingin menghapus semua ${filesToUpload.length} foto?`)) {
+                filesToUpload = [];
+                previewGrid.innerHTML = `
+                    <div style="text-align: center; grid-column: 1 / -1; padding: 40px; color: #7f8c8d;">
+                        <p>Belum ada foto yang diupload</p>
+                        <p>Silakan pilih atau drop foto di area atas</p>
+                    </div>
+                `;
+            }
+        });
+        
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        // Add some sample functionality
+        console.log('Sistem Upload Foto Siswa siap digunakan!');
+    </script>
+</body>
+</html>
